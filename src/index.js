@@ -249,17 +249,6 @@ Navigo.prototype = {
 
     if (this._paused) return false;
 
-    if (
-        this._lastRouteResolved &&
-        onlyURL === this._lastRouteResolved.url &&
-        GETParameters === this._lastRouteResolved.query
-    ) {
-      if (this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.already) {
-        this._lastRouteResolved.hooks.already(this._lastRouteResolved.params);
-      }
-      return false;
-    }
-
     m = match(onlyURL, this._routes);
 
     if (m) {
