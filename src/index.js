@@ -251,6 +251,7 @@ Navigo.prototype = {
     if (this._paused) return false;
 
     if (
+        !this.skipLocationChangeResolve &&
         this._lastRouteResolved &&
         onlyURL === this._lastRouteResolved.url &&
         GETParameters === this._lastRouteResolved.query
