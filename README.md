@@ -1,4 +1,4 @@
-# Navigo
+# Navigo - sans last resolved route check
 
 A simple minimalistic JavaScript router with a fallback for older browsers.
 
