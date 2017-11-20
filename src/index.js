@@ -6,8 +6,9 @@ function isPushStateAvailable() {
   );
 }
 
-function Navigo(r, useHash, hash) {
+function Navigo(r, useHash, hash, skipLocationChangeResolve) {
   this.root = null;
+  this.skipLocationChangeResolve = skipLocationChangeResolve;
   this._routes = [];
   this._useHash = useHash;
   this._hash = typeof hash === 'undefined' ? '#' : hash;
@@ -249,6 +250,17 @@ Navigo.prototype = {
 
     if (this._paused) return false;
 
+    if (
+        this._lastRouteResolved &&
+        onlyURL === this._lastRouteResolved.url &&
+        GETParameters === this._lastRouteResolved.query
+    ) {
+      if (this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.already) {
+        this._lastRouteResolved.hooks.already(this._lastRouteResolved.params);
+      }
+      return false;
+    }
+
     m = match(onlyURL, this._routes);
 
     if (m) {
@@ -422,7 +434,11 @@ Navigo.prototype = {
   _findLinks: function () {
     return [].slice.call(document.querySelectorAll('[data-navigo]'));
   },
-  _onLocationChange: function () {},
+  _onLocationChange: function () {
+    if (!this.skipLocationChangeResolve) {
+      this.resolve();
+    }
+  },
   _callLeave() {
     if (this._lastRouteResolved && this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.leave) {
       this._lastRouteResolved.hooks.leave();
