@@ -422,9 +422,7 @@ Navigo.prototype = {
   _findLinks: function () {
     return [].slice.call(document.querySelectorAll('[data-navigo]'));
   },
-  _onLocationChange: function () {
-    
-  },
+  _onLocationChange: function () {},
   _callLeave() {
     if (this._lastRouteResolved && this._lastRouteResolved.hooks && this._lastRouteResolved.hooks.leave) {
       this._lastRouteResolved.hooks.leave();
