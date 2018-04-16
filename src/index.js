@@ -237,6 +237,7 @@ Navigo.prototype = {
     this._notFoundHandler = { handler, hooks: hooks };
     return this;
   },
+  match: findMatchedRoutes,
   resolve: function (current, onlyRoute) {
     var handler, m;
     var url = (current || this._cLoc()).replace(this._getRoot(), '');
