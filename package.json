@@ -1,6 +1,6 @@
 {
   "name": "navigo",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "description": "A simple vanilla JavaScript router with a fallback for older browsers",
   "main": "lib/navigo.js",
   "jsnext:main": "src/index.js",
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dev": "WEBPACK_ENV=dev ./node_modules/.bin/webpack --progress --colors --watch",
-    "build": "npm run test && WEBPACK_ENV=build ./node_modules/.bin/webpack",
+    "build": "WEBPACK_ENV=build ./node_modules/.bin/webpack",
     "test": "node ./test/karma.js",
     "test-chrome": "node ./test/karma.js --browser=Chrome --watch=true",
     "test-firefox": "node ./test/karma.js --browser=Firefox  --watch=true"

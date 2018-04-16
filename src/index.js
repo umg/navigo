@@ -237,7 +237,7 @@ Navigo.prototype = {
     this._notFoundHandler = { handler, hooks: hooks };
     return this;
   },
-  resolve: function (current) {
+  resolve: function (current, onlyRoute) {
     var handler, m;
     var url = (current || this._cLoc()).replace(this._getRoot(), '');
 
@@ -265,22 +265,24 @@ Navigo.prototype = {
     m = match(onlyURL, this._routes);
 
     if (m) {
-      this._callLeave();
-      this._lastRouteResolved = {
-        url: onlyURL,
-        query: GETParameters,
-        hooks: m.route.hooks,
-        params: m.params,
-        name: m.route.name
-      };
-      handler = m.route.handler;
-      manageHooks(() => {
+      if (!onlyRoute) {
+        this._callLeave();
+        this._lastRouteResolved = {
+          url: onlyURL,
+          query: GETParameters,
+          hooks: m.route.hooks,
+          params: m.params,
+          name: m.route.name
+        };
+        handler = m.route.handler;
         manageHooks(() => {
-          m.route.route instanceof RegExp ?
-            handler(...(m.match.slice(1, m.match.length))) :
-            handler(m.params, GETParameters);
-        }, m.route.hooks, m.params, this._genericHooks);
-      }, this._genericHooks, m.params);
+          manageHooks(() => {
+            m.route.route instanceof RegExp ?
+              handler(...(m.match.slice(1, m.match.length))) :
+              handler(m.params, GETParameters);
+          }, m.route.hooks, m.params, this._genericHooks);
+        }, this._genericHooks, m.params);
+      }
       return m;
     } else if (this._defaultHandler && (
         onlyURL === '' ||
@@ -288,22 +290,26 @@ Navigo.prototype = {
         onlyURL === this._hash ||
         isHashedRoot(onlyURL, this._useHash, this._hash)
     )) {
-      manageHooks(() => {
+      if (!onlyRoute) {
         manageHooks(() => {
-          this._callLeave();
-          this._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: this._defaultHandler.hooks };
-          this._defaultHandler.handler(GETParameters);
-        }, this._defaultHandler.hooks);
-      }, this._genericHooks);
+          manageHooks(() => {
+            this._callLeave();
+            this._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: this._defaultHandler.hooks };
+            this._defaultHandler.handler(GETParameters);
+          }, this._defaultHandler.hooks);
+        }, this._genericHooks);
+      }
       return true;
     } else if (this._notFoundHandler) {
-      manageHooks(() => {
+      if (!onlyRoute) {
         manageHooks(() => {
-          this._callLeave();
-          this._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: this._notFoundHandler.hooks };
-          this._notFoundHandler.handler(GETParameters);
-        }, this._notFoundHandler.hooks);
-      }, this._genericHooks);
+          manageHooks(() => {
+            this._callLeave();
+            this._lastRouteResolved = { url: onlyURL, query: GETParameters, hooks: this._notFoundHandler.hooks };
+            this._notFoundHandler.handler(GETParameters);
+          }, this._notFoundHandler.hooks);
+        }, this._genericHooks);
+      }
     }
     return false;
   },
