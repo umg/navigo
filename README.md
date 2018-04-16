@@ -291,7 +291,7 @@ router.hooks({
 * `router.on(object)` - adding a new route
 * `router.off(handler)` - removes the routes associated with the given handler/function
 * `router.navigate(path='', absolute=false)` - if `absolute` is `false` then Navigo finds the root path of your app based on the provided routes.
-* `router.resolve(currentURL=undefined)` - if `currentURL` is provided then the method tries resolving the registered routes to that URL and not `window.location.href`.
+* `router.resolve(currentURL=undefined, onlyRoute=undefined)` - if `currentURL` is provided then the method tries resolving the registered routes to that URL and not `window.location.href`. if `onlyRoute` is true then the router will skip executing the assigned route handler
 * `router.destroy` - removes all the registered routes and stops the URL change listening.
 * `router.link(path)` - it returns a full url of the given `path`
 * `router.pause(boolean)` - it gives you a chance to change the route without resolving. Make sure that you call `router.pause(false)` so you return to the previous working state.
