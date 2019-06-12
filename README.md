@@ -7,7 +7,7 @@ A simple minimalistic JavaScript router with a fallback for older browsers.
 
 *([Demo source files](./demo))*
 
----
+--- 
 
 ## Installation
 
